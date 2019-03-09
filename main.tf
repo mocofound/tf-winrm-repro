@@ -8,7 +8,9 @@ provider "azurerm" {
 
 variable "azure_rm_resource_group" {
   type = string
+  description = "Resource Group to Add Network and VM on"
 }
+
 resource "random_string" "password" {
   length = 16
   special = true
