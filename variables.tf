@@ -1,4 +1,4 @@
-variable subnet_id {}
+#variable subnet_id {}
 
 # azurerm provider
 #variable subscription_id {}
