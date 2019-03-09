@@ -149,7 +149,7 @@ resource "null_resource" "cluster" {
   # So we just choose the first in this case
   connection {
     type = "winrm"
-    host = "${azurerm_network_interface.nic.private_ip_address}"
+    host = "${azurerm_network_interface.nic.public_ip_address}"
     port = 5985
     user = "deploy"
     password = "${random_string.password.result}"
