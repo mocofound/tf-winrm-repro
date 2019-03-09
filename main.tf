@@ -6,6 +6,8 @@ provider "azurerm" {
   #tenant_id = "${var.tenant_id}"
 }
 
+variable "azure_rm_resource_group" { }
+
 resource "random_string" "password" {
   length = 16
   special = true
