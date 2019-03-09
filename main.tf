@@ -6,7 +6,7 @@ provider "azurerm" {
   #tenant_id = "${var.tenant_id}"
 }
 
-variable "azure_rm_resource_group" {
+variable "azurerm_resource_group" {
   type = "string"
   description = "Resource Group to Add Network and VM on"
 }
