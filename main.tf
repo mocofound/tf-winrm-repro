@@ -149,7 +149,7 @@ resource "null_resource" "cluster" {
   # So we just choose the first in this case
   connection {
     type = "winrm"
-    host = "${data.azurerm_public_ip.myterraformpublicip.ip_address}"
+    host = "40.113.205.113"
     port = 5985
     user = "deploy"
     password = "${random_string.password.result}"
