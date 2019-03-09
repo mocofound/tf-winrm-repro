@@ -105,7 +105,7 @@ resource "azurerm_network_interface" "nic" {
 
 resource "azurerm_virtual_machine" "vm" {
   name = "tf-test"
-  location = "$centralus"
+  location = "centralus"
   resource_group_name = "${var.azurerm_resource_group}"
   network_interface_ids = ["${azurerm_network_interface.nic.id}"]
   vm_size = "Standard_B1s"
