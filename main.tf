@@ -7,7 +7,7 @@ provider "azurerm" {
 }
 
 variable "azure_rm_resource_group" {
-  type = string
+  type = "string"
   description = "Resource Group to Add Network and VM on"
 }
 
