@@ -160,7 +160,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["md c:\test & echo foo > c:\\test.txt"]
+    inline = ["mkdir c:\test & echo foo > c:\\test\\test.txt"]
   }
 }
 
