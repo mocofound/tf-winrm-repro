@@ -12,29 +12,85 @@ resource "random_string" "password" {
   override_special = "_"
 }
 
-resource "azurerm_resource_group" "group" {
-  name = "terraform-sandbox"
-  location = "eastus"
+#resource "azurerm_resource_group" "group" {
+#  name = "terraform-sandbox"
+#  location = "eastus"
+#}
+
+# Create subnet
+resource "azurerm_subnet" "myterraformsubnet" {
+    name                 = "mySubnet"
+    resource_group_name  = "${var.azurerm_resource_group.name}"
+    virtual_network_name = "${azurerm_virtual_network.myterraformnetwork.name}"
+    address_prefix       = "10.0.1.0/24"
+}
+
+# Create public IPs
+resource "azurerm_public_ip" "myterraformpublicip" {
+    name                         = "myPublicIP"
+    location                     = "centralus"
+    resource_group_name          = "${var.azurerm_resource_group.name}"
+    public_ip_address_allocation = "dynamic"
+
+    tags {
+        environment = "Terraform Demo"
+    }
+}
+
+# Create Network Security Group and rule
+resource "azurerm_network_security_group" "myterraformnsg" {
+    name                = "myNetworkSecurityGroup"
+    location            = "centralus"
+    resource_group_name = "${var.azurerm_resource_group.name}"
+
+    security_rule {
+        name                       = "RDP"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "3389"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+  security_rule {
+        name                       = "WinRM"
+        priority                   = 998
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "5986"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+
+    tags {
+        environment = "Terraform Demo"
+    }
 }
 
 resource "azurerm_network_interface" "nic" {
   name = "mharen-test"
-  location = "${azurerm_resource_group.group.location}"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  location = "${var.azurerm_resource_group.location}"
+  resource_group_name = "${var.azurerm_resource_group.name}"
 
   ip_configuration {
     name = "private_ip_address"
-    subnet_id = "${var.subnet_id}"
+    subnet_id = "${azurerm_subnet.myterraformsubnet.id}"
     private_ip_address_allocation = "dynamic"
   }
 }
 
 resource "azurerm_virtual_machine" "vm" {
   name = "tf-test"
-  location = "${azurerm_resource_group.group.location}"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  location = "${var.azurerm_resource_group.location}"
+  resource_group_name = "${var.azurerm_resource_group.name}"
   network_interface_ids = ["${azurerm_network_interface.nic.id}"]
-  vm_size = "Standard_F2S"
+  vm_size = "Standard_B1s"
   delete_os_disk_on_termination = true
 
   storage_os_disk {
