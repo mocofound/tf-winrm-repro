@@ -20,7 +20,7 @@ resource "random_string" "password" {
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
     name                 = "mySubnet"
-    resource_group_name  = "${var.azurerm_resource_group.name}"
+    resource_group_name  = "${var.azurerm_resource_group}"
     virtual_network_name = "${azurerm_virtual_network.myterraformnetwork.name}"
     address_prefix       = "10.0.1.0/24"
 }
@@ -29,7 +29,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP"
     location                     = "centralus"
-    resource_group_name          = "${var.azurerm_resource_group.name}"
+    resource_group_name          = "${var.azurerm_resource_group}"
     public_ip_address_allocation = "dynamic"
 
     tags {
@@ -41,7 +41,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 resource "azurerm_network_security_group" "myterraformnsg" {
     name                = "myNetworkSecurityGroup"
     location            = "centralus"
-    resource_group_name = "${var.azurerm_resource_group.name}"
+    resource_group_name = "${var.azurerm_resource_group}"
 
     security_rule {
         name                       = "RDP"
@@ -75,8 +75,8 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
 resource "azurerm_network_interface" "nic" {
   name = "mharen-test"
-  location = "${var.azurerm_resource_group.location}"
-  resource_group_name = "${var.azurerm_resource_group.name}"
+  location = "centralus"
+  resource_group_name = "${var.azurerm_resource_group}"
 
   ip_configuration {
     name = "private_ip_address"
@@ -88,7 +88,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_virtual_machine" "vm" {
   name = "tf-test"
   location = "${var.azurerm_resource_group.location}"
-  resource_group_name = "${var.azurerm_resource_group.name}"
+  resource_group_name = "${var.azurerm_resource_group}"
   network_interface_ids = ["${azurerm_network_interface.nic.id}"]
   vm_size = "Standard_B1s"
   delete_os_disk_on_termination = true
@@ -142,7 +142,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["echo foo > c:\\test.txt"]
+    inline = ["md c:\test & echo foo > c:\\test.txt"]
   }
 }
 
