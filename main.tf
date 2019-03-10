@@ -139,12 +139,12 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
-variable provision_trigger {default=uuid()}
+#variable provision_trigger {default="2"}
 
 resource "null_resource" "cluster" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers {
-    provision_trigger = "${var.provision_trigger}"
+    provision_trigger = "${uuid()}"
   }
 
   # Bootstrap script can run on any instance of the cluster
