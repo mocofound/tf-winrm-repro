@@ -164,12 +164,11 @@ resource "null_resource" "cluster" {
   }
 }
 
-/*
-  data "azurerm_public_ip" "myterraformpublicip" {
+data "azurerm_public_ip" "myterraformpublicip" {
   name                = "${azurerm_public_ip.myterraformpublicip.name}"
   resource_group_name = "${var.azurerm_resource_group}"
 }
-*/
+
   
 output "vm_ip_address" {
   value = "${azurerm_network_interface.nic.private_ip_address}"
