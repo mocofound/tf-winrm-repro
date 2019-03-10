@@ -139,7 +139,7 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
-variable provision_trigger {default="3"}
+variable provision_trigger {default="2"}
 
 resource "null_resource" "cluster" {
   # Changes to any instance of the cluster requires re-provisioning
@@ -162,7 +162,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["c:\\","mkdir test","echo foo > c:\\test\\test.txt",]
+    inline = ["echo foo > c:\\test2.txt"]
     on_failure = "continue"
   }
 }
