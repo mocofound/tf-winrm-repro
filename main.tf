@@ -162,9 +162,10 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    #inline = ["echo foo > c:\\test\\test.txt"]
-    command = "mkdir test & echo foo > c:\\test\\test.txt",
-    interpreter = ["PowerShell"]
+    inline = ["c:","mkdir test","echo foo > c:\\test\\test.txt"]
+    #command = "mkdir test & echo foo > c:\\test\\test.txt",
+    #interpreter = ["PowerShell"]
+    on_failure = "continue"
   }
 }
 
