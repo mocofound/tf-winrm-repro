@@ -44,7 +44,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
-    name                         = "myPublicIP"
+    name                         = "myPublicIP2"
     location                     = "centralus"
     resource_group_name          = "${var.azurerm_resource_group}"
     public_ip_address_allocation = "dynamic"
