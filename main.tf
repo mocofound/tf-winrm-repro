@@ -164,7 +164,7 @@ resource "null_resource" "cluster" {
   }
 }
 
-data "azurerm_public_ip" "test" {
+data "azurerm_public_ip" "myterraformpublicip" {
   name                = "${azurerm_public_ip.myterraformpublicip.name}"
   resource_group_name = "${var.azurerm_resource_group}"
 }
