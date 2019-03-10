@@ -149,7 +149,7 @@ resource "null_resource" "cluster" {
   # So we just choose the first in this case
   connection {
     type = "winrm"
-    host = "40.113.205.113"
+    host = "${data.azurerm_public_ip.test.ip_address}"
     port = 5985
     user = "deploy"
     password = "${random_string.password.result}"
@@ -164,6 +164,10 @@ resource "null_resource" "cluster" {
   }
 }
 
+data "azurerm_public_ip" "test" {
+  name                = "${azurerm_public_ip.test.name}"
+  resource_group_name = "${azurerm_virtual_machine.test.resource_group_name}"
+}
 
 output "vm_ip_address" {
   value = "${azurerm_network_interface.nic.private_ip_address}"
