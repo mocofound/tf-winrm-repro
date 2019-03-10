@@ -148,7 +148,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["powershell.exe echo foo > D:\\myfile.txt"]
+    inline = ["powershell.exe echo foo > C:\\myfile.txt"]
     #on_failure = "continue"
       # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
