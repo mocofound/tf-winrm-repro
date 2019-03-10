@@ -148,7 +148,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["mkdir testWinRM","echo foo > testfile101.txt"]
+    inline = ["mkdir testWinRM","echo foo > D:\\testfile102.txt","echo foo > D:\testfile101.txt",]
     on_failure = "continue"
       # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
