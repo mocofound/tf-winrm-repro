@@ -147,7 +147,10 @@ resource "null_resource" "cluster" {
     provision_trigger = "${uuid()}"
   }
 
-  # Bootstrap script can run on any instance of the cluster
+  provisioner "remote-exec" {
+    inline = ["mkdir testWinRM"]
+    #on_failure = "continue"
+      # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
   connection {
     type = "winrm"
@@ -161,9 +164,6 @@ resource "null_resource" "cluster" {
     use_ntlm = false
   }
 
-  provisioner "remote-exec" {
-    inline = ["mkdir testWinRM"]
-    #on_failure = "continue"
   }
 }
 
