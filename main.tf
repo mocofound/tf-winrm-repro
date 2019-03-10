@@ -162,8 +162,8 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "remote-exec" {
-    inline = ["echo foo > c:\\test2.txt"]
-    on_failure = "continue"
+    inline = ["mkdir testWinRM"]
+    #on_failure = "continue"
   }
 }
 
