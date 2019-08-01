@@ -168,7 +168,7 @@ resource "null_resource" "cluster" {
 }
 
 resource "azurerm_virtual_machine_extension" "timefix" {
-  name     = "${var.server_name}"
+  name     = "${azurerm_virtual_machine.vm.name}tf"
   location = "centralus"
   resource_group_name = "${var.azurerm_resource_group}"
   virtual_machine_name = "${azurerm_virtual_machine.vm.name}"
