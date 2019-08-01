@@ -37,7 +37,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
     name                 = "mySubnet"
-    virtual_network_name = "${azurerm_resource_group.group.name}"
+    virtual_network_name = "{azurerm_virtual_network.myterraformnetwork.name}"
     address_prefix       = "10.0.1.0/24"
     network_security_group_id = "${azurerm_network_security_group.myterraformnsg.id}"
 }
