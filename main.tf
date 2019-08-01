@@ -27,7 +27,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "centralus"
-    resource_group_name = "${azurerm_resource_group.group.name}"
+
 
     tags {
         environment = "Terraform Demo"
@@ -40,6 +40,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
     virtual_network_name = "{azurerm_virtual_network.myterraformnetwork.name}"
     address_prefix       = "10.0.1.0/24"
     network_security_group_id = "${azurerm_network_security_group.myterraformnsg.id}"
+    resource_group_name = "${azurerm_resource_group.group.name}"
 }
 
 # Create public IPs
