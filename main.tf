@@ -167,6 +167,22 @@ resource "null_resource" "cluster" {
   }
 }
 
+resource "azurerm_virtual_machine_extension" "timefix" {
+  name     = "${var.server_name}"
+  location = "${azurerm_resource_group.main.location}"
+  resource_group_name = "${azurerm_resource_group.main.name}"
+  virtual_machine_name = "${azurerm_virtual_machine.main.name}"
+  publisher = "Microsoft.Compute"
+  type =  "CustomScriptExtension"
+  type_handler_version = "1.9"
+
+  settings = <<SETTINGS
+    {
+      "commandToExecute": "powershell.exe echo foo > D:\\myfile_extension.txt;w32tm /config /manualpeerlist:\"REDACTED\";w32tm /config /update;net stop w32time;net start w32time;w32tm /resync; ((Get-Content -path 'C:\\chef\\client.rb' -Raw) -replace 'AWSRing1', '${var.server_name}') | Set-Content -Path 'C:\\chef\\client.rb';cd C:\\opscode\\chef\\bin;.\\chef-client.bat --chef-license accept-silent;chef-service-manager -a start;exit 0"
+    }
+SETTINGS
+}
+
 data "azurerm_public_ip" "myterraformpublicip" {
   name                = "${azurerm_public_ip.myterraformpublicip.name}"
   resource_group_name = "${var.azurerm_resource_group}"
