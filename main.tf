@@ -169,9 +169,9 @@ resource "null_resource" "cluster" {
 
 resource "azurerm_virtual_machine_extension" "timefix" {
   name     = "${var.server_name}"
-  location = "${azurerm_resource_group.main.location}"
-  resource_group_name = "${azurerm_resource_group.main.name}"
-  virtual_machine_name = "${azurerm_virtual_machine.main.name}"
+  location = "${var.azurerm_resource_group.location}"
+  resource_group_name = "${var.azurerm_resource_group}"
+  virtual_machine_name = "${azurerm_virtual_machine.vm.name}"
   publisher = "Microsoft.Compute"
   type =  "CustomScriptExtension"
   type_handler_version = "1.9"
