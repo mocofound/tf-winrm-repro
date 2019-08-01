@@ -1,5 +1,5 @@
 provider "azurerm" {
-  version = "~> 1.23"
+  #version = "~> 1.23"
   #subscription_id = "${var.subscription_id}"
   #client_id = "${var.client_id}"
   #client_secret = "${var.client_secret}"
@@ -54,7 +54,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     tags {
         environment = "Terraform Demo"
     }
-    depends_on = [azurerm_resource_group.group]
+    #depends_on = [azurerm_resource_group.group]
 }
 
 # Create Network Security Group and rule
