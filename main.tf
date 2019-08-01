@@ -19,7 +19,7 @@ resource "random_string" "password" {
 
 resource "azurerm_resource_group" "group" {
   name = "test-rg"
-  location = "eastus"
+  location = "centralus"
 }
 
 # Create virtual network
