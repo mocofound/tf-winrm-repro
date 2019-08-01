@@ -27,7 +27,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "centralus"
-    resource_group_name = "${azurerm_resource_group.group.name}"
+    resource_group_name = "${var.azurerm_resource_group}"
 
 
     tags {
@@ -41,14 +41,14 @@ resource "azurerm_subnet" "myterraformsubnet" {
     virtual_network_name = "{azurerm_virtual_network.myterraformnetwork.name}"
     address_prefix       = "10.0.1.0/24"
     network_security_group_id = "${azurerm_network_security_group.myterraformnsg.id}"
-    resource_group_name = "${azurerm_resource_group.group.name}"
+    resource_group_name = "${var.azurerm_resource_group}"
 }
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP2"
     location                     = "centralus"
-    resource_group_name          = "${azurerm_resource_group.group.name}"
+    resource_group_name          = "${var.azurerm_resource_group}"
     public_ip_address_allocation = "dynamic"
 
     tags {
@@ -61,7 +61,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 resource "azurerm_network_security_group" "myterraformnsg" {
     name                = "myNetworkSecurityGroup"
     location            = "centralus"
-    resource_group_name = "${azurerm_resource_group.group.name}"
+    resource_group_name = "${var.azurerm_resource_group}"
 
     security_rule {
         name                       = "RDP"
@@ -96,7 +96,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 resource "azurerm_network_interface" "nic" {
   name = "mharen-test"
   location = "centralus"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  resource_group_name = "${var.azurerm_resource_group}"
   network_security_group_id     = "${azurerm_network_security_group.myterraformnsg.id}"
 
   ip_configuration {
@@ -110,7 +110,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_virtual_machine" "vm" {
   name = "tf-test"
   location = "centralus"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  resource_group_name = "${var.azurerm_resource_group}"
   network_interface_ids = ["${azurerm_network_interface.nic.id}"]
   vm_size = "Standard_B1s"
   delete_os_disk_on_termination = true
@@ -173,7 +173,7 @@ resource "null_resource" "cluster" {
 resource "azurerm_virtual_machine_extension" "timefix" {
   name     = "${azurerm_virtual_machine.vm.name}tf"
   location = "centralus"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  resource_group_name = "${var.azurerm_resource_group}"
   virtual_machine_name = "${azurerm_virtual_machine.vm.name}"
   publisher = "Microsoft.Compute"
   type =  "CustomScriptExtension"
@@ -188,7 +188,7 @@ SETTINGS
 
 data "azurerm_public_ip" "myterraformpublicip" {
   name                = "${azurerm_public_ip.myterraformpublicip.name}"
-  resource_group_name = "${azurerm_resource_group.group.name}"
+  resource_group_name = "${var.azurerm_resource_group}"
 }
 
   
