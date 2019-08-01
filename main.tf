@@ -190,7 +190,7 @@ SETTINGS
 data "azurerm_public_ip" "myterraformpublicip" {
   name                = "${azurerm_public_ip.myterraformpublicip.name}"
   resource_group_name = "${var.azurerm_resource_group}"
-  depends_on = "[azurerm_public_ip.myterraformpublicip,]"
+  #depends_on = "[azurerm_public_ip.myterraformpublicip,]"
 }
 
   
