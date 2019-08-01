@@ -6,10 +6,10 @@ provider "azurerm" {
   #tenant_id = "${var.tenant_id}"
 }
 
-variable "azurerm_resource_group" {
-  type = "string"
-  description = "Resource Group to Add Network and VM on"
-}
+#variable "azurerm_resource_group" {
+#  type = "string"
+#  description = "Resource Group to Add Network and VM on"
+#}
 
 resource "random_string" "password" {
   length = 16
