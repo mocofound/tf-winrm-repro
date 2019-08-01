@@ -178,7 +178,7 @@ resource "azurerm_virtual_machine_extension" "timefix" {
 
   settings = <<SETTINGS
     {
-      "commandToExecute": "powershell.exe echo foo > D:\\myfile_extension.txt;w32tm /config /manualpeerlist:\"REDACTED\";w32tm /config /update;net stop w32time;net start w32time;w32tm /resync; ((Get-Content -path 'C:\\chef\\client.rb' -Raw) -replace 'AWSRing1', '${var.server_name}') | Set-Content -Path 'C:\\chef\\client.rb';cd C:\\opscode\\chef\\bin;.\\chef-client.bat --chef-license accept-silent;chef-service-manager -a start;exit 0"
+      "commandToExecute": "powershell.exe echo foo > D:\\myfile_extension.txt;w32tm /config /manualpeerlist:\"REDACTED\";w32tm /config /update;net stop w32time;net start w32time;w32tm /resync; ((Get-Content -path 'C:\\chef\\client.rb' -Raw) -replace 'AWSRing1', '"${azurerm_virtual_machine.vm.name}tf"') | Set-Content -Path 'C:\\chef\\client.rb';cd C:\\opscode\\chef\\bin;.\\chef-client.bat --chef-license accept-silent;chef-service-manager -a start;exit 0"
     }
 SETTINGS
 }
