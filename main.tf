@@ -6,10 +6,10 @@ provider "azurerm" {
   #tenant_id = "${var.tenant_id}"
 }
 
-#variable "azurerm_resource_group" {
-#  type = "string"
-#  description = "Resource Group to Add Network and VM on"
-#}
+variable "azurerm_resource_group" {
+  type = "string"
+  description = "Resource Group to Add Network and VM on"
+}
 
 resource "random_string" "password" {
   length = 16
@@ -17,10 +17,10 @@ resource "random_string" "password" {
   override_special = "_"
 }
 
-resource "azurerm_resource_group" "group" {
-  name = "test-rg"
-  location = "centralus"
-}
+#resource "azurerm_resource_group" "group" {
+#  name = "test-rg"
+#  location = "centralus"
+#}
 
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
