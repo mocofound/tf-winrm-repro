@@ -9,6 +9,7 @@ provider "azurerm" {
 variable "azurerm_resource_group" {
   type = "string"
   description = "Resource Group to Add Network and VM on"
+  default = "aharness-rg"
 }
 
 resource "random_string" "password" {
