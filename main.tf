@@ -54,6 +54,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     tags {
         environment = "Terraform Demo"
     }
+    depends_on = [azurerm_resource_group.group]
 }
 
 # Create Network Security Group and rule
