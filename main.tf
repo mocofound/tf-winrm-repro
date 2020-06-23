@@ -8,7 +8,7 @@ provider "azurerm" {
 }
 
 variable "azurerm_resource_group" {
-  type = "string"
+  type = string
   description = "Resource Group to Add Network and VM on"
   default = "aharness-rg"
 }
@@ -29,23 +29,23 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "centralus"
-    resource_group_name = "${var.azurerm_resource_group}"
+    resource_group_name = var.azurerm_resource_group
 }
 
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
     name                 = "mySubnet"
-    virtual_network_name = "{azurerm_virtual_network.myterraformnetwork.name}"
+    virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
     address_prefix       = "10.0.1.0/24"
     #network_security_group_id = "${azurerm_network_security_group.myterraformnsg.id}"
-    resource_group_name = "${var.azurerm_resource_group}"
+    resource_group_name = var.azurerm_resource_group
 }
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP4"
     location                     = "centralus"
-    resource_group_name          = "${var.azurerm_resource_group}"
+    resource_group_name          = var.azurerm_resource_group}
     allocation_method            = "Dynamic"
 
     #depends_on = [azurerm_resource_group.group]
@@ -55,7 +55,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 resource "azurerm_network_security_group" "myterraformnsg" {
     name                = "myNetworkSecurityGroup"
     location            = "centralus"
-    resource_group_name = "${var.azurerm_resource_group}"
+    resource_group_name = var.azurerm_resource_group
 
     security_rule {
         name                       = "RDP"
@@ -85,27 +85,27 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 resource "azurerm_network_interface" "nic" {
   name = "mharen-test"
   location = "centralus"
-  resource_group_name = "${var.azurerm_resource_group}"
+  resource_group_name = var.azurerm_resource_group
   #network_security_group_id     = "${azurerm_network_security_group.myterraformnsg.id}"
 
   ip_configuration {
     name                          = "private_ip_address"
-    subnet_id                     = "${azurerm_subnet.myterraformsubnet.id}"
+    subnet_id                     = azurerm_subnet.myterraformsubnet.id
     private_ip_address_allocation = "dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.myterraformpublicip.id}"
+    public_ip_address_id          = azurerm_public_ip.myterraformpublicip.id
   }
 }
 
 resource "azurerm_virtual_machine" "vm" {
   name = "tf-test"
   location = "centralus"
-  resource_group_name = "${var.azurerm_resource_group}"
-  network_interface_ids = ["${azurerm_network_interface.nic.id}"]
+  resource_group_name = var.azurerm_resource_group
+  network_interface_ids = [azurerm_network_interface.nic.id]
   vm_size = "Standard_B1s"
   delete_os_disk_on_termination = true
 
   storage_os_disk {
-    name = "mharen-test"
+    name = "winrm-test"
     caching = "ReadWrite"
     create_option = "FromImage"
     managed_disk_type = "Premium_LRS"
@@ -121,7 +121,7 @@ resource "azurerm_virtual_machine" "vm" {
   os_profile {
     computer_name= "tf-test"
     admin_username = "deploy"
-    admin_password = "${random_string.password.result}"
+    admin_password = random_string.password.result
   }
 
   os_profile_windows_config {
@@ -143,7 +143,7 @@ resource "null_resource" "cluster" {
   # So we just choose the first in this case
   connection {
     type = "winrm"
-    host = "${data.azurerm_public_ip.myterraformpublicip.ip_address}"
+    host = data.azurerm_public_ip.myterraformpublicip.ip_address
     port = 5985
     user = "deploy"
     password = "${random_string.password.result}"
