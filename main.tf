@@ -1,5 +1,6 @@
 provider "azurerm" {
-  #version = "~> 1.23"
+  version = "~> 2.19"
+  features {}
   #subscription_id = "${var.subscription_id}"
   #client_id = "${var.client_id}"
   #client_secret = "${var.client_secret}"
