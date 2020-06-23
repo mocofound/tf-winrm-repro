@@ -45,7 +45,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP4"
     location                     = "centralus"
-    resource_group_name          = var.azurerm_resource_group}
+    resource_group_name          = var.azurerm_resource_group
     allocation_method            = "Dynamic"
 
     #depends_on = [azurerm_resource_group.group]
@@ -146,7 +146,7 @@ resource "null_resource" "cluster" {
     host = data.azurerm_public_ip.myterraformpublicip.ip_address
     port = 5985
     user = "deploy"
-    password = "${random_string.password.result}"
+    password = random_string.password.result
     timeout = "10m"
     https = false
     insecure = true
@@ -158,10 +158,10 @@ resource "null_resource" "cluster" {
 #"commandToExecute": "powershell.exe echo foo > D:\\myfile_extension.txt;w32tm /config /manualpeerlist:\"REDACTED\";w32tm /config /update;net stop w32time;net start w32time;w32tm /resync; ((Get-Content -path 'C:\\chef\\client.rb' -Raw) -replace 'AWSRing1', '"${azurerm_virtual_machine.vm.name}tf"') | Set-Content -Path 'C:\\chef\\client.rb';cd C:\\opscode\\chef\\bin;.\\chef-client.bat --chef-license accept-silent;chef-service-manager -a start;exit 0"
 
 resource "azurerm_virtual_machine_extension" "timefix" {
-  name     = "${azurerm_virtual_machine.vm.name}tf"
+  name     = azurerm_virtual_machine.vm.name
   location = "centralus"
-  resource_group_name = "${var.azurerm_resource_group}"
-  virtual_machine_name = "${azurerm_virtual_machine.vm.name}"
+  resource_group_name = var.azurerm_resource_group
+  virtual_machine_name = azurerm_virtual_machine.vm.name
   publisher = "Microsoft.Compute"
   type =  "CustomScriptExtension"
   type_handler_version = "1.9"
@@ -174,14 +174,14 @@ SETTINGS
 }
 
 data "azurerm_public_ip" "myterraformpublicip" {
-  name                = "${azurerm_public_ip.myterraformpublicip.name}"
-  resource_group_name = "${var.azurerm_resource_group}"
+  name                = azurerm_public_ip.myterraformpublicip.name
+  resource_group_name = var.azurerm_resource_group
   #depends_on = "[azurerm_public_ip.myterraformpublicip,]"
 }
 
   
 output "vm_ip_address" {
-  value = "${azurerm_network_interface.nic.private_ip_address}"
+  value = azurerm_network_interface.nic.private_ip_address
 }
 
 output "vm_username" {
@@ -189,5 +189,5 @@ output "vm_username" {
 }
 
 output "vm_password" {
-  value = "${random_string.password.result}"
+  value = random_string.password.result
 }
