@@ -86,7 +86,7 @@ resource "azurerm_network_interface" "nic" {
   name = "mharen-test"
   location = "centralus"
   resource_group_name = "${var.azurerm_resource_group}"
-  network_security_group_id     = "${azurerm_network_security_group.myterraformnsg.id}"
+  #network_security_group_id     = "${azurerm_network_security_group.myterraformnsg.id}"
 
   ip_configuration {
     name                          = "private_ip_address"
@@ -133,7 +133,7 @@ resource "azurerm_virtual_machine" "vm" {
 resource "null_resource" "cluster" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers {
-    provision_trigger = "${uuid()}"
+    provision_trigger = uuid()
   }
 
   provisioner "remote-exec" {
