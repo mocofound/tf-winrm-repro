@@ -46,7 +46,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP4"
     location                     = "centralus"
     resource_group_name          = "${var.azurerm_resource_group}"
-    public_ip_address_allocation = "dynamic"
+    allocation_method = "dynamic"
 
     #depends_on = [azurerm_resource_group.group]
 }
