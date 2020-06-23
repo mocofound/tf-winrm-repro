@@ -30,11 +30,6 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     address_space       = ["10.0.0.0/16"]
     location            = "centralus"
     resource_group_name = "${var.azurerm_resource_group}"
-
-
-    tags {
-        environment = "Terraform Demo"
-    }
 }
 
 # Create subnet
@@ -53,9 +48,6 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     resource_group_name          = "${var.azurerm_resource_group}"
     public_ip_address_allocation = "dynamic"
 
-    tags {
-        environment = "Terraform Demo"
-    }
     #depends_on = [azurerm_resource_group.group]
 }
 
@@ -87,11 +79,6 @@ resource "azurerm_network_security_group" "myterraformnsg" {
         destination_port_range     = "5985-5986"
         source_address_prefix      = "*"
         destination_address_prefix = "*"
-    }
-
-
-    tags {
-        environment = "Terraform Demo"
     }
 }
 
@@ -143,8 +130,6 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
-#variable provision_trigger {default="2"}
-
 resource "null_resource" "cluster" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers {
@@ -153,8 +138,8 @@ resource "null_resource" "cluster" {
 
   provisioner "remote-exec" {
     inline = ["powershell.exe echo foo > D:\\myfile.txt"]
-    #on_failure = "continue"
-      # Bootstrap script can run on any instance of the cluster
+  #on_failure = "continue"
+  # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
   connection {
     type = "winrm"
